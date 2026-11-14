@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Volume2, VolumeX, Globe, Sparkles, RotateCcw } from "lucide-react";
+import { X, Volume2, VolumeX, Globe, Sparkles, RotateCcw, Star } from "lucide-react";
 import CapAvatar from "./CapAvatar";
 
 export function SettingsModal({ t, lang, onChangeLang, soundOn, onToggleSound, onClose }) {
@@ -149,6 +149,69 @@ export function NasaDataModal({ t, onClose }) {
           type="button"
           onClick={onClose}
           className="w-full py-3 rounded-2xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-bold text-sm transition"
+        >
+          {t.close}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function CreditsModal({ t, onClose }) {
+  const c = t.credits;
+  const sections = [
+    { heading: c.designDev, lines: [c.team] },
+    { heading: c.builtWith, lines: ["React", "Three.js · React Three Fiber · Drei", "Tailwind CSS", "Lucide Icons", "Vite"] },
+    { heading: c.science, lines: [c.scienceText] },
+  ];
+  return (
+    <div
+      className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="credits-title"
+    >
+      <div className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl">
+        <div className="flex items-center justify-between mb-5">
+          <h2 id="credits-title" className="flex items-center gap-2 font-display text-xl font-bold text-white">
+            <Star className="w-5 h-5 text-amber-300" />
+            {c.title}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={t.close}
+            className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="max-h-[55vh] overflow-y-auto overflow-x-hidden mb-5 pr-1">
+          <div className="credits-roll flex flex-col items-center text-center gap-5 py-2">
+            <div className="text-4xl">🚀</div>
+            <p className="font-display text-2xl font-bold text-white">{t.gameTitle}</p>
+            {sections.map((sec) => (
+              <div key={sec.heading}>
+                <p className="text-xs font-extrabold uppercase tracking-widest text-orange-300 mb-1.5">
+                  {sec.heading}
+                </p>
+                {sec.lines.map((line) => (
+                  <p key={line} className="text-sm font-semibold text-slate-200 leading-relaxed">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            ))}
+            <p className="font-display text-lg font-bold text-amber-200 pt-2">{c.thanks}</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          autoFocus
+          className="w-full py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-white/15 font-bold text-sm text-white transition"
         >
           {t.close}
         </button>

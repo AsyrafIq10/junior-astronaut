@@ -1,10 +1,10 @@
 import React, { Suspense, lazy, useMemo, useRef, useState } from "react";
-import StartScreen from "./components/StartScreen";
+import MainMenu from "./components/MainMenu";
 import WorldIntro from "./components/WorldIntro";
 import HUD from "./components/HUD";
 import SolCard from "./components/SolCard";
 import { QuizModal, CertificateModal } from "./components/QuizAndCertificate";
-import { SettingsModal, LoseModal, NasaDataModal } from "./components/Modals";
+import { SettingsModal, LoseModal, NasaDataModal, CreditsModal } from "./components/Modals";
 import { TRANSLATIONS } from "./data/translations";
 import { INITIAL_STATS, RESOURCE_KEYS, SOL_DATA } from "./data/sols";
 import { spaceAudio } from "./utils/sound";
@@ -29,6 +29,7 @@ export default function App() {
 
   const [showSettings, setShowSettings] = useState(false);
   const [showNasa, setShowNasa] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
   // The launch/landing cinematic plays once per visit.
   const hasSeenWorldIntro = useRef(false);
 
@@ -174,14 +175,19 @@ export default function App() {
       />
       </Suspense>
 
-      {/* Start Screen */}
+      {/* Main menu: Start Game → mission select, Settings, Credits */}
       {phase === "start" && (
-        <StartScreen
+        <MainMenu
           t={t}
           onStartMars={handleStartMars}
+          onPlaySfx={playSfx}
           onOpenSettings={() => {
             playSfx("click");
             setShowSettings(true);
+          }}
+          onOpenCredits={() => {
+            playSfx("click");
+            setShowCredits(true);
           }}
           onOpenNasa={() => {
             playSfx("click");
@@ -297,6 +303,16 @@ export default function App() {
       )}
 
       {/* NASA Science & Data Modal */}
+      {showCredits && (
+        <CreditsModal
+          t={t}
+          onClose={() => {
+            playSfx("click");
+            setShowCredits(false);
+          }}
+        />
+      )}
+
       {showNasa && (
         <NasaDataModal
           t={t}
