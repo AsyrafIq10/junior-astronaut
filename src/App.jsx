@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from "react";
-import MarsScene from "./components/MarsScene";
+import React, { Suspense, lazy, useMemo, useState } from "react";
 import StartScreen from "./components/StartScreen";
 import HUD from "./components/HUD";
 import SolCard from "./components/SolCard";
@@ -8,6 +7,9 @@ import { SettingsModal, LoseModal, NasaDataModal } from "./components/Modals";
 import { TRANSLATIONS } from "./data/translations";
 import { INITIAL_STATS, RESOURCE_KEYS, SOL_DATA } from "./data/sols";
 import { spaceAudio } from "./utils/sound";
+
+// Load the heavy 3D scene (three.js) as a separate chunk so the UI paints first.
+const MarsScene = lazy(() => import("./components/MarsScene"));
 
 export default function App() {
   const [lang, setLang] = useState("en");
@@ -140,6 +142,7 @@ export default function App() {
   return (
     <div className="relative w-screen h-screen overflow-hidden select-none">
       {/* 3D Open-World Jezero Crater Scene */}
+      <Suspense fallback={<div className="absolute inset-0 bg-[#1a0d0a]" />}>
       <MarsScene
         phase={phase}
         stats={stats}
@@ -153,6 +156,7 @@ export default function App() {
         dpadInput={dpadInput}
         moduleLabels={t.modules}
       />
+      </Suspense>
 
       {/* Start Screen */}
       {phase === "start" && (
