@@ -39,3 +39,75 @@
     print-color-adjust: exact;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   World intro (launch → cruise → landing) animations
+--------------------------------------------------------------------------- */
+@keyframes wi-flicker { 0%,100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(1.25); opacity: .85; } }
+.wi-flame { transform-origin: 50% 80%; transform-box: fill-box; animation: wi-flicker .12s linear infinite; }
+
+@keyframes wi-liftoff { 0% { bottom: calc(18% + 10px); } 15% { bottom: calc(18% + 18px); } 100% { bottom: 140%; } }
+.wi-liftoff { animation: wi-liftoff 3.2s cubic-bezier(.55,0,.85,.4) forwards; }
+
+@keyframes wi-ground-drop { 0%,15% { transform: translateY(0); } 100% { transform: translateY(100%); } }
+.wi-ground-drop { animation: wi-ground-drop 3.2s cubic-bezier(.55,0,.85,.4) forwards; }
+
+@keyframes wi-smoke { 0% { opacity: .9; transform: translateX(-50%) scale(.4); } 100% { opacity: 0; transform: translateX(-50%) scale(2.2); } }
+.wi-smoke { background: radial-gradient(ellipse at center, rgba(226,232,240,.9), rgba(148,163,184,0) 70%); animation: wi-smoke 1.4s ease-out infinite; }
+
+@keyframes wi-twinkle { 0%,100% { opacity: .9; } 50% { opacity: .35; } }
+.wi-twinkle { animation: wi-twinkle 2.6s ease-in-out infinite; }
+
+@keyframes wi-stars-move { from { transform: translateX(0); } to { transform: translateX(-8%); } }
+.wi-stars-move { animation: wi-stars-move 4s linear forwards; }
+
+@keyframes wi-earth-away { from { transform: scale(1); opacity: 1; } to { transform: translate(-60px, 80px) scale(.25); opacity: .5; } }
+.wi-earth-away { animation: wi-earth-away 4s ease-in forwards; }
+
+@keyframes wi-planet-grow { from { transform: scale(.5); } to { transform: scale(3.4) translate(-12px, 14px); } }
+.wi-planet-grow { animation: wi-planet-grow 4s ease-in forwards; }
+
+@keyframes wi-cruise { from { transform: translate(0,0) scale(1); } to { transform: translate(52vw,-40vh) scale(.35); } }
+.wi-cruise { animation: wi-cruise 4s ease-in-out forwards; }
+
+@keyframes wi-surface-rise { from { top: 105vh; } to { top: 60vh; } }
+.wi-surface-rise { animation: wi-surface-rise 3.4s cubic-bezier(.2,.7,.3,1) forwards; }
+
+@keyframes wi-atmo-glow { from { opacity: .75; } to { opacity: 0; } }
+.wi-atmo-glow { animation: wi-atmo-glow 2.2s ease-out forwards; pointer-events: none; }
+
+@keyframes wi-descend { 0% { bottom: 110vh; } 75% { bottom: calc(40vh + 20px); } 100% { bottom: calc(40vh - 14px); } }
+.wi-descend { animation: wi-descend 3.4s cubic-bezier(.25,.8,.35,1) forwards; }
+
+@keyframes wi-pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.wi-pop { animation: wi-pop .35s cubic-bezier(.3,1.6,.5,1) both; }
+
+@keyframes wi-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.wi-fade-in { animation: wi-fade-in .8s ease-out both; }
+
+@keyframes wi-rise-in { 0%,40% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: none; } }
+.wi-rise-in { animation: wi-rise-in 1.6s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="wi-"] { animation: none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   Main menu & credits
+--------------------------------------------------------------------------- */
+@keyframes menu-fade-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.menu-fade-in { animation: menu-fade-in .35s ease-out both; }
+
+@keyframes menu-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); } 40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
+}
+.menu-shake { animation: menu-shake .4s ease-in-out; }
+
+@keyframes credits-roll { from { opacity: 0; transform: translateY(40%); } to { opacity: 1; transform: none; } }
+.credits-roll { animation: credits-roll 2.4s cubic-bezier(.2,.7,.3,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-fade-in, .menu-shake, .credits-roll { animation: none !important; }
+}

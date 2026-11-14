@@ -136,6 +136,44 @@ class SpaceAudio {
     this.playTone(240, 0.25, "triangle", 0.12, 0.18);
   }
 
+  playBeep() {
+    this.playTone(880, 0.12, "square", 0.06);
+  }
+
+  // Rocket engine rumble: filtered noise with a slow fade.
+  playLaunch() {
+    if (!this.ensureContext()) return;
+    try {
+      const ctx = this.ctx;
+      const dur = 3;
+      const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(380, ctx.currentTime);
+      filter.frequency.linearRampToValueAtTime(140, ctx.currentTime + dur);
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.28, ctx.currentTime + 0.25);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      src.start();
+    } catch {
+      // ignore
+    }
+  }
+
+  playLanding() {
+    this.playTone(110, 0.35, "sine", 0.18, 0);
+    this.playTone(70, 0.45, "sine", 0.14, 0.05);
+    this.playSuccess();
+  }
+
   playVictory() {
     const notes = [523.25, 659.25, 783.99, 1046.5];
     notes.forEach((n, i) => {
