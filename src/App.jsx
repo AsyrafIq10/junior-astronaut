@@ -1,5 +1,6 @@
-import React, { Suspense, lazy, useMemo, useState } from "react";
+import React, { Suspense, lazy, useMemo, useRef, useState } from "react";
 import StartScreen from "./components/StartScreen";
+import WorldIntro from "./components/WorldIntro";
 import HUD from "./components/HUD";
 import SolCard from "./components/SolCard";
 import { QuizModal, CertificateModal } from "./components/QuizAndCertificate";
@@ -14,7 +15,7 @@ const MarsScene = lazy(() => import("./components/MarsScene"));
 export default function App() {
   const [lang, setLang] = useState("en");
   const [soundOn, setSoundOn] = useState(true);
-  const [phase, setPhase] = useState("start"); // start | intro | playing | lost | victory | quiz | certificate
+  const [phase, setPhase] = useState("start"); // start | worldIntro | intro | playing | lost | victory | quiz | certificate
   const [currentSol, setCurrentSol] = useState(1);
   const [stats, setStats] = useState({ ...INITIAL_STATS });
   const [panelsDusty, setPanelsDusty] = useState(false);
@@ -28,6 +29,8 @@ export default function App() {
 
   const [showSettings, setShowSettings] = useState(false);
   const [showNasa, setShowNasa] = useState(false);
+  // The launch/landing cinematic plays once per visit.
+  const hasSeenWorldIntro = useRef(false);
 
   const t = TRANSLATIONS[lang];
   const solConfig = useMemo(
@@ -48,6 +51,9 @@ export default function App() {
     if (type === "success") spaceAudio.playSuccess();
     if (type === "alert") spaceAudio.playAlert();
     if (type === "victory") spaceAudio.playVictory();
+    if (type === "beep") spaceAudio.playBeep();
+    if (type === "launch") spaceAudio.playLaunch();
+    if (type === "land") spaceAudio.playLanding();
   };
 
   const handleToggleSound = () => {
@@ -70,8 +76,18 @@ export default function App() {
 
   const handleStartMars = () => {
     if (soundOn) spaceAudio.startAmbient();
+    playSfx("click");
+    if (hasSeenWorldIntro.current) {
+      resetMission("intro");
+      return;
+    }
+    hasSeenWorldIntro.current = true;
+    resetMission("worldIntro");
+  };
+
+  const handleWorldIntroDone = () => {
     playSfx("success");
-    resetMission("intro");
+    setPhase("intro");
   };
 
   const handleStartSol1 = () => {
@@ -174,8 +190,18 @@ export default function App() {
         />
       )}
 
+      {/* Rocket launch → cruise → landing cinematic */}
+      {phase === "worldIntro" && (
+        <WorldIntro
+          t={t}
+          world="mars"
+          onPlaySfx={playSfx}
+          onFinish={handleWorldIntroDone}
+        />
+      )}
+
       {/* Active Gameplay HUD & Mission Card */}
-      {phase !== "start" && (
+      {phase !== "start" && phase !== "worldIntro" && (
         <HUD
           t={t}
           currentSol={currentSol}
