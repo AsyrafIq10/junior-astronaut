@@ -1,44 +1,48 @@
-export const TRANSLATIONS = {
+import { TASK_TEXT } from "./taskText.js";
+
+const BASE = {
   en: {
-    gameTitle: "Jezero 6: Mission Mars",
-    heroTagline: "6-Sol Outpost Survival Adventure",
+    gameTitle: "Blast Off!",
+    heroTagline: "Jezero 6 • Mars Rover Adventure",
     choosePlanet: "Choose Your Landing Site",
     marsTitle: "Mars: Jezero Crater",
-    marsSubtitle: "6-Sol Outpost Survival Demo",
+    marsSubtitle: "5 Rover Tasks • Fly Home to Earth",
     marsCTA: "Launch Mission",
-    worldIntro: {
-      ariaLabel: "Rocket launch to Mars",
-      countdown: "Launching to Mars in",
-      liftoff: "Liftoff! 🚀",
-      cruise: "Cruising through space…",
-      cruiseSub: "About 7 months to Mars",
-      landing: "Entering the Martian atmosphere…",
-      touchdown: "Touchdown!",
-      landedTitle: "Welcome to Jezero Crater",
-      landedSub: "You've landed safely on Mars, Cadet. Your base is waiting!",
-      startBtn: "Start Mission",
-      skip: "Skip",
-    },
-    moonTitle: "Lunar: Shackleton Crater",
     menu: {
-      navLabel: "Main menu",
+      subtitle: "Mission Control • Earth Orbit",
+      baseLabel: "Earth Mission Control",
       startGame: "Start Game",
       credits: "Credits",
-      chooseMission: "Choose Your Mission",
       back: "Back",
-      available: "Available",
+      selectMission: "Select Your Mission",
+      missionMars: "Mission Mars",
+      missionLunar: "Mission Lunar",
       locked: "Locked",
+      lockedHint: "Complete Mission Mars to unlock",
+      version: "v1.0 • Made for young space explorers",
     },
-    credits: {
+    creditsModal: {
       title: "Credits",
-      designDev: "Game Design & Development",
-      team: "Junior Astronaut Team",
-      builtWith: "Built With",
-      science: "Science",
-      scienceText: "Inspired by NASA's Mars 2020 Perseverance mission and real Jezero Crater science.",
-      thanks: "Thank you for playing, Cadet! 🌟",
+      sections: [
+        { heading: "Game Design & Development", items: ["Jezero 6 Mission Team"] },
+        { heading: "Science & Data", items: ["NASA Perseverance Rover (MOXIE & MEDA)", "NASA DONKI Space Weather Database", "NASA Open Science Data Repository (OSDR)"] },
+        { heading: "Built With", items: ["React", "Three.js & React Three Fiber", "Tailwind CSS", "Lucide Icons", "Web Audio API (all sounds synthesized)"] },
+      ],
+      thanks: "Thank you for playing, Cadet! 🚀",
     },
-    moonSubtitle: "Coming Soon",
+    launch: {
+      countdown: "T-minus",
+      liftoff: "Liftoff!",
+      cruise: "Cruising to Mars",
+      cruiseSub: "225 million km • ~7 months of travel",
+      descent: "Entering Mars atmosphere",
+      descentSub: "Firing retro-rockets…",
+      touchdown: "Touchdown!",
+      touchdownSub: "Welcome to Jezero Crater",
+      skip: "Skip",
+    },
+    moonTitle: "Moon: Shackleton Crater",
+    moonSubtitle: "5 Lunar Tasks • Artemis Base",
     settings: "Settings",
     language: "Language",
     soundLabel: "Space Audio & Effects",
@@ -46,16 +50,22 @@ export const TRANSLATIONS = {
     soundOff: "Off",
     close: "Close",
     nasaDataBtn: "NASA Science & Data",
-    solLabel: "Sol",
-    ofSix: "of 6",
     resources: {
+      health: "Crew Health",
       power: "Power",
-      oxygen: "Oxygen",
-      shielding: "Shielding",
-      food: "Food",
+      supplies: "Supplies",
+      science: "Science",
     },
     roverMode: "Rover Mode",
     roverHint: "WASD / Arrows or D-Pad to drive • Drag to look",
+    rover: {
+      camOn: "Rover Cam On!",
+      explore: "Drive around and discover the base!",
+      backToBase: "Back to Base",
+      found: "You found:",
+      map: "Map",
+      you: "You",
+    },
     resetCam: "Reset View",
     clickModuleHint: "Tip: Click any base module to inspect it!",
     modules: {
@@ -65,161 +75,44 @@ export const TRANSLATIONS = {
       greenhouse: "Hydroponic Greenhouse",
     },
     intro: {
-      title: "Welcome to Jezero Crater, Cadet!",
+      title: "Welcome to Jezero 6, Cadet!",
       capLine:
-        "Beep-boop! I'm Cap, your rover buddy! Jezero Crater is an ancient dry lakebed on Mars. One Martian day is called a Sol—let's keep our base alive for 6 Sols!",
-      startBtn: "Start Sol 1",
-    },
-    sols: {
-      1: {
-        title: "Sol 1: The MOXIE Air-Maker",
-        context:
-          "Mars air is 95% carbon dioxide! NASA's MOXIE machine turns it into breathable oxygen, but uses lots of battery power.",
-        capTip: "Running MOXIE makes fresh air, but watch our yellow Power bar!",
-        choiceA: "Run MOXIE Full Blast",
-        choiceB: "Save Power & Use Backup Air",
-      },
-      2: {
-        title: "Sol 2: Cleaning Martian Soil (Perchlorates)",
-        context:
-          "Martian dirt has natural salts called perchlorates that hurt plants unless we wash the soil and heat the greenhouse.",
-        capTip:
-          "Space potatoes need clean soil! Heating the greenhouse uses extra Shield energy.",
-        choiceA: "Wash Soil & Heat Greenhouse",
-        choiceB: "Keep Shields Max & Ration Snacks",
-      },
-      3: {
-        title: "Sol 3: NASA DONKI Solar Storm + 14-Min Delay",
-        context:
-          "NASA's DONKI space weather tracker spots a solar storm! Radio messages from Earth take 14 minutes to reach Mars—you must decide fast!",
-        capTip:
-          "Whoa, solar storm alert! Earth can't reply in time—trust your Cadet instincts!",
-        choiceA: "Boost Storm Shields Now",
-        choiceB: "Keep Air Scrubbers Full Speed",
-      },
-      4: {
-        title: "Sol 4: Red Dust Devil on Solar Panels",
-        context:
-          "A Martian dust devil covered our solar panels in red dust, slowing down battery charging.",
-        capTip:
-          "Brushing the panels outside takes oxygen and snack energy, but charges our base!",
-        choiceA: "Brush Off Solar Panels",
-        choiceB: "Stay Inside on Low Power",
-      },
-      5: {
-        title: "Sol 5: NASA OSDR Green Algae Test",
-        context:
-          "Mission Control asks us to test growing green algae from NASA's OSDR space-biology lab to make extra oxygen in Mars gravity.",
-        capTip:
-          "Science time! Green algae can give us a big oxygen boost before the final night.",
-        choiceA: "Run NASA Algae Test",
-        choiceB: "Skip Test & Save Supplies",
-      },
-      6: {
-        title: "Sol 6: Freezing -85°C Martian Night",
-        context:
-          "NASA's MEDA weather station reads -85°C outside! Survive until the relief rocket lands at sunrise!",
-        capTip:
-          "Final Sol, Cadet! Keep the heaters steady until the sunrise rescue rocket arrives!",
-        choiceA: "Balance Heaters, Air & Shields",
-        choiceB: "Blast Full Heaters Early",
-      },
+        "Hi! I'm Dr Farah! Your mission: drive our rover to 5 checkpoints around Jezero Crater. Every task has a tough choice, and there's no perfect answer! Finish all 5 to earn your ride home to Earth.",
+      startBtn: "Start Mission",
     },
     lose: {
-      title: "Mission Paused — Outpost Needs Help!",
-      retryBtn: "Try Again from Sol 1",
+      title: "Mission Paused!",
+      retryBtn: "Try the Mission Again",
       tips: {
+        health:
+          "Our Crew Health hit 0! Working outside in the cold and dust is hard on astronauts. Sometimes the safe choice is the smart choice!",
         power:
-          "Our Power hit 0%! On Mars, solar panels and heaters share the same batteries. Try balancing power-hungry machines like MOXIE!",
-        oxygen:
-          "Our Oxygen hit 0%! Mars air is mostly carbon dioxide, so astronauts rely on machines like MOXIE and algae experiments to breathe.",
-        shielding:
-          "Our Shielding hit 0%! Radiation and solar storms on Mars are fierce—keeping strong shields protects the whole crew!",
-        food:
-          "Our Food hit 0%! Growing space crops in clean, washed soil keeps astronauts energized for hard work outside.",
+          "Our Power hit 0! Lasers, heaters and long drives all drain the battery. Remember, NASA's Opportunity rover stopped forever when its power ran out.",
+        supplies:
+          "Our Supplies hit 0! Spare parts, food and air are hard to replace on Mars. Earth is months away, so astronauts must save what they have.",
       },
     },
     victory: {
-      bannerTitle: "Sunrise Rescue! You Survived All 6 Sols!",
+      bannerTitle: "Welcome Home, Cadet! Mission Complete!",
       capLine:
-        "Woohoo! The relief rocket landed! Ready for your 4-question Cadet Debrief Quiz to earn your Mars Certificate?",
-      goToQuiz: "Start Debrief Quiz",
-    },
-    quiz: {
-      title: "Cadet Debrief Quiz",
-      subtitle: "Answer 4 quick questions to unlock your official Mars Certificate!",
-      questionLabel: "Question",
-      nextBtn: "Next Question",
-      finishBtn: "Claim Cadet Certificate",
-      questions: [
-        {
-          q: "Why did we have to make tough choices between Power, Oxygen, Shields, and Food?",
-          options: [
-            "Mars bases have limited energy, so boosting one system uses up another!",
-            "Robots on Mars like to turn lights off for fun.",
-            "Mars has unlimited free electricity in the air.",
-          ],
-          correct: 0,
-          feedbackCorrect:
-            "Spot on! Every Mars outpost has a strict energy budget—smart trade-offs keep everyone safe!",
-          feedbackWrong:
-            "Not quite! On Mars, energy is limited—using more power for one system means less for another.",
-        },
-        {
-          q: "What does NASA's real MOXIE machine make from Mars's carbon dioxide (CO₂) air?",
-          options: [
-            "Liquid rocket fuel",
-            "Breathable Oxygen",
-            "Space ice cream",
-          ],
-          correct: 1,
-          feedbackCorrect:
-            "Awesome! MOXIE on NASA's Perseverance rover really turns Martian CO₂ into breathable oxygen!",
-          feedbackWrong:
-            "Good guess, but MOXIE actually turns Mars's carbon dioxide air into breathable oxygen!",
-        },
-        {
-          q: "Why couldn't Earth Mission Control make the Sol 3 Solar Storm choice for us?",
-          options: [
-            "They were asleep on Earth.",
-            "Radio signals take about 14 minutes to travel between Earth and Mars!",
-            "Mars blocks all radio waves forever.",
-          ],
-          correct: 1,
-          feedbackCorrect:
-            "You got it! Because Mars is so far away, radio messages take ~14 minutes each way!",
-          feedbackWrong:
-            "Close! Mars is millions of kilometers away, so radio messages take about 14 minutes to arrive!",
-        },
-        {
-          q: "Why do astronauts need to wash Martian soil before growing space potatoes?",
-          options: [
-            "To remove natural salts called perchlorates that hurt plants",
-            "To make the dirt look prettier",
-            "Because Martian dirt is too wet",
-          ],
-          correct: 0,
-          feedbackCorrect:
-            "Brilliant! Washing out perchlorate salts makes Martian soil safe for growing healthy crops!",
-          feedbackWrong:
-            "Almost! Martian soil has natural salts called perchlorates that we must wash out first.",
-        },
-      ],
+        "Woohoo! You finished all 5 rover tasks and flew home safely with your Mars samples! Let's count your Mission Points!",
+      goToQuiz: "See My Certificate",
     },
     certificate: {
       heading: "Official Mars Cadet Certificate",
       presentedTo: "Proudly Awarded To",
       namePlaceholder: "Enter Cadet Name...",
       defaultName: "Space Cadet",
-      completedLine:
-        "For successfully surviving 6 Sols at Jezero Crater, Mars!",
-      finalStats: "Final Outpost Status",
+      completedLine: "For completing all 5 rover tasks on Mars and flying home safely!",
+      finalStats: "Final Mission Status",
       badgeLabel: "Specialty Rank",
+      roverLevel: "Rover Level",
+      badgesTitle: "Badges Collected",
       badges: {
+        health: "Crew Care Captain",
         power: "Master Power Engineer",
-        oxygen: "Chief Oxygen Specialist",
-        shielding: "Shield Commander",
-        food: "Space Botanist",
+        supplies: "Supply Chief",
+        science: "Star Scientist",
       },
       printBtn: "Print / Save PDF",
       downloadBtn: "Download PNG",
@@ -247,45 +140,47 @@ export const TRANSLATIONS = {
   },
 
   ms: {
-    gameTitle: "Jezero 6: Misi Marikh",
-    heroTagline: "Pengembaraan Hidup 6-Sol di Marikh",
+    gameTitle: "Blast Off!",
+    heroTagline: "Jezero 6 • Pengembaraan Rover Marikh",
     choosePlanet: "Pilih Tapak Pendaratan Anda",
     marsTitle: "Marikh: Kawah Jezero",
-    marsSubtitle: "Demo Hidup Pangkalan 6-Sol",
+    marsSubtitle: "5 Tugasan Rover • Terbang Pulang ke Bumi",
     marsCTA: "Mulakan Misi",
-    worldIntro: {
-      ariaLabel: "Pelancaran roket ke Marikh",
-      countdown: "Pelancaran ke Marikh dalam",
-      liftoff: "Berlepas! 🚀",
-      cruise: "Mengembara merentasi angkasa…",
-      cruiseSub: "Kira-kira 7 bulan ke Marikh",
-      landing: "Memasuki atmosfera Marikh…",
+    menu: {
+      subtitle: "Kawalan Misi • Orbit Bumi",
+      baseLabel: "Kawalan Misi Bumi",
+      startGame: "Mula Permainan",
+      credits: "Kredit",
+      back: "Kembali",
+      selectMission: "Pilih Misi Anda",
+      missionMars: "Misi Marikh",
+      missionLunar: "Misi Bulan",
+      locked: "Dikunci",
+      lockedHint: "Tamatkan Misi Marikh untuk membuka",
+      version: "v1.0 • Dibina untuk penjelajah angkasa muda",
+    },
+    creditsModal: {
+      title: "Kredit",
+      sections: [
+        { heading: "Reka Bentuk & Pembangunan Permainan", items: ["Pasukan Misi Jezero 6"] },
+        { heading: "Sains & Data", items: ["Rover Perseverance NASA (MOXIE & MEDA)", "Pangkalan Data Cuaca Angkasa DONKI NASA", "Repositori Data Sains Terbuka NASA (OSDR)"] },
+        { heading: "Dibina Dengan", items: ["React", "Three.js & React Three Fiber", "Tailwind CSS", "Ikon Lucide", "Web Audio API (semua bunyi disintesis)"] },
+      ],
+      thanks: "Terima kasih kerana bermain, Kadet! 🚀",
+    },
+    launch: {
+      countdown: "Kiraan detik",
+      liftoff: "Pelancaran!",
+      cruise: "Menuju ke Marikh",
+      cruiseSub: "225 juta km • ~7 bulan perjalanan",
+      descent: "Memasuki atmosfera Marikh",
+      descentSub: "Menghidupkan roket brek…",
       touchdown: "Mendarat!",
-      landedTitle: "Selamat Datang ke Kawah Jezero",
-      landedSub: "Anda telah mendarat dengan selamat di Marikh, Kadet. Pangkalan anda sedang menunggu!",
-      startBtn: "Mulakan Misi",
+      touchdownSub: "Selamat datang ke Kawah Jezero",
       skip: "Langkau",
     },
     moonTitle: "Bulan: Kawah Shackleton",
-    menu: {
-      navLabel: "Menu utama",
-      startGame: "Mula Permainan",
-      credits: "Penghargaan",
-      chooseMission: "Pilih Misi Anda",
-      back: "Kembali",
-      available: "Tersedia",
-      locked: "Dikunci",
-    },
-    credits: {
-      title: "Penghargaan",
-      designDev: "Reka Bentuk & Pembangunan Permainan",
-      team: "Pasukan Junior Astronaut",
-      builtWith: "Dibina Dengan",
-      science: "Sains",
-      scienceText: "Diilhamkan oleh misi Mars 2020 Perseverance NASA dan sains sebenar Kawah Jezero.",
-      thanks: "Terima kasih kerana bermain, Kadet! 🌟",
-    },
-    moonSubtitle: "Akan Datang",
+    moonSubtitle: "5 Tugasan Bulan • Pangkalan Artemis",
     settings: "Tetapan",
     language: "Bahasa",
     soundLabel: "Audio Angkasa & Kesan Bunyi",
@@ -293,16 +188,22 @@ export const TRANSLATIONS = {
     soundOff: "Mati",
     close: "Tutup",
     nasaDataBtn: "Sains & Data NASA",
-    solLabel: "Sol",
-    ofSix: "drp 6",
     resources: {
-      power: "Tenaga",
-      oxygen: "Oksigen",
-      shielding: "Perisai",
-      food: "Makanan",
+      health: "Kesihatan Kru",
+      power: "Kuasa",
+      supplies: "Bekalan",
+      science: "Sains",
     },
     roverMode: "Mod Rover",
     roverHint: "WASD / Anak panah atau D-Pad untuk pandu • Seret untuk lihat",
+    rover: {
+      camOn: "Kamera Rover Dihidupkan!",
+      explore: "Pandu dan terokai pangkalan!",
+      backToBase: "Kembali ke Pangkalan",
+      found: "Anda jumpa:",
+      map: "Peta",
+      you: "Anda",
+    },
     resetCam: "Set Semula Kamera",
     clickModuleHint: "Tip: Klik mana-mana modul pangkalan untuk periksa!",
     modules: {
@@ -312,163 +213,44 @@ export const TRANSLATIONS = {
       greenhouse: "Rumah Hijau Hidroponik",
     },
     intro: {
-      title: "Selamat Datang ke Kawah Jezero, Kadet!",
+      title: "Selamat Datang ke Jezero 6, Kadet!",
       capLine:
-        "Bip-bop! Saya Cap, rakan rover anda! Kawah Jezero ialah tasik purba yang kering di Marikh. Satu hari di Marikh dipanggil Sol—mari kekalkan pangkalan kita selama 6 Sol!",
-      startBtn: "Mula Sol 1",
-    },
-    sols: {
-      1: {
-        title: "Sol 1: Penjana Udara MOXIE",
-        context:
-          "Udara Marikh mengandungi 95% karbon dioksida! Mesin MOXIE NASA menukarkannya kepada oksigen, tetapi guna banyak kuasa bateri.",
-        capTip:
-          "Menjalankan MOXIE menghasilkan udara segar, tapi perhatikan bar Tenaga kuning kita!",
-        choiceA: "Jalankan MOXIE Sepenuh Kuasa",
-        choiceB: "Jimat Tenaga & Guna Udara Simpanan",
-      },
-      2: {
-        title: "Sol 2: Cuci Tanah Marikh (Perklorat)",
-        context:
-          "Tanah Marikh ada garam semula jadi bernama perklorat yang merosakkan tumbuhan kecuali kita mencucinya dan memanaskan rumah hijau.",
-        capTip:
-          "Kentang angkasa perlukan tanah bersih! Pemanas rumah hijau guna tenaga Perisai.",
-        choiceA: "Cuci Tanah & Panaskan Rumah Hijau",
-        choiceB: "Kekalkan Perisai & Catuan Snek",
-      },
-      3: {
-        title: "Sol 3: Ribut Suria DONKI NASA + Kelewatan 14 Minit",
-        context:
-          "Penjejak cuaca angkasa DONKI NASA mengesan ribut suria! Mesej radio dari Bumi ambil masa 14 minit ke Marikh—anda mesti pilih cepat!",
-        capTip:
-          "Awas, amaran ribut suria! Bumi tak sempat balas—ikut gerak hati Kadet anda!",
-        choiceA: "Tingkatkan Perisai Ribut Sekarang",
-        choiceB: "Kekalkan Penapis Udara Laju Penuh",
-      },
-      4: {
-        title: "Sol 4: Puting Beliung Debu di Panel Suria",
-        context:
-          "Puting beliung debu Marikh menyaluti panel suria kita dengan debu merah, melambatkan pengecasan bateri.",
-        capTip:
-          "Membersih panel di luar guna oksigen dan tenaga makanan, tapi cas semula pangkalan kita!",
-        choiceA: "Bersihkan Debu Panel Suria",
-        choiceB: "Duduk di Dalam Dengan Kuasa Rendah",
-      },
-      5: {
-        title: "Sol 5: Ujian Alga Hijau OSDR NASA",
-        context:
-          "Pusat Kawalan meminta kita menguji penanaman alga hijau dari makmal bio-angkasa OSDR NASA untuk hasilkan oksigen tambahan.",
-        capTip:
-          "Masa sains! Alga hijau boleh beri lonjakan oksigen sebelum malam terakhir.",
-        choiceA: "Jalankan Ujian Alga NASA",
-        choiceB: "Langkau Ujian & Simpan Bekalan",
-      },
-      6: {
-        title: "Sol 6: Malam Marikh Sejuk Beku -85°C",
-        context:
-          "Stesen cuaca MEDA NASA mencatat -85°C di luar! Bertahan sehingga roket penyelamat mendarat waktu matahari terbit!",
-        capTip:
-          "Sol terakhir, Kadet! Imbangkan pemanas sehingga roket penyelamat tiba!",
-        choiceA: "Imbangkan Pemanas, Udara & Perisai",
-        choiceB: "Pasang Pemanas Penuh Awal",
-      },
+        "Hai! Saya Dr Farah! Misi anda: pandu rover kita ke 5 pusat pemeriksaan di sekitar Kawah Jezero. Setiap tugasan ada pilihan yang sukar, dan tiada jawapan sempurna! Selesaikan kesemua 5 untuk pulang ke Bumi.",
+      startBtn: "Mula Misi",
     },
     lose: {
-      title: "Misi Dijeda — Pangkalan Perlukan Bantuan!",
-      retryBtn: "Cuba Lagi dari Sol 1",
+      title: "Misi Dihentikan!",
+      retryBtn: "Cuba Misi Semula",
       tips: {
+        health:
+          "Kesihatan Kru kita mencecah 0! Bekerja di luar dalam sejuk dan debu sangat memenatkan angkasawan. Kadang-kadang pilihan selamat ialah pilihan bijak!",
         power:
-          "Tenaga kita mencecah 0%! Di Marikh, panel suria dan pemanas berkongsi bateri yang sama. Cuba imbangkan mesin kuat tenaga seperti MOXIE!",
-        oxygen:
-          "Oksigen kita mencecah 0%! Udara Marikh kebanyakannya karbon dioksida, jadi angkasawan bergantung pada mesin seperti MOXIE dan alga untuk bernafas.",
-        shielding:
-          "Perisai kita mencecah 0%! Radiasi dan ribut suria di Marikh sangat kuat—perisai kukuh melindungi seluruh kru!",
-        food:
-          "Makanan kita mencecah 0%! Menanam tanaman angkasa dalam tanah bersih memberi tenaga kepada angkasawan untuk kerja luar.",
+          "Kuasa kita mencecah 0! Laser, pemanas dan perjalanan jauh menghabiskan bateri. Ingat, rover Opportunity NASA berhenti selama-lamanya apabila kuasanya habis.",
+        supplies:
+          "Bekalan kita mencecah 0! Alat ganti, makanan dan udara sukar diganti di Marikh. Bumi berbulan-bulan jauhnya, jadi angkasawan mesti berjimat.",
       },
     },
     victory: {
-      bannerTitle: "Penyelamat Subuh! Anda Berjaya Harungi 6 Sol!",
+      bannerTitle: "Selamat Pulang, Kadet! Misi Selesai!",
       capLine:
-        "Hore! Roket penyelamat telah mendarat! Bersedia untuk Kuiz Kadet 4 soalan bagi mendapatkan Sijil Marikh anda?",
-      goToQuiz: "Mula Kuiz Kadet",
-    },
-    quiz: {
-      title: "Kuiz Tamat Misi Kadet",
-      subtitle:
-        "Jawab 4 soalan ringkas untuk membuka Sijil Rasmi Marikh anda!",
-      questionLabel: "Soalan",
-      nextBtn: "Soalan Seterusnya",
-      finishBtn: "Tuntut Sijil Kadet",
-      questions: [
-        {
-          q: "Mengapa kita perlu membuat pilihan sukar antara Tenaga, Oksigen, Perisai, dan Makanan?",
-          options: [
-            "Pangkalan Marikh ada tenaga terhad, jadi menguatkan satu sistem guna sumber lain!",
-            "Robot di Marikh suka tutup lampu untuk berseronok.",
-            "Marikh ada elektrik percuma tanpa had di udara.",
-          ],
-          correct: 0,
-          feedbackCorrect:
-            "Tepat sekali! Setiap pangkalan Marikh ada bajet tenaga terhad—pilihan bijak menjaga keselamatan semua!",
-          feedbackWrong:
-            "Hampir tepat! Di Marikh, tenaga terhad—guna lebih kuasa untuk satu sistem bermakna kurang untuk sistem lain.",
-        },
-        {
-          q: "Apakah yang dihasilkan oleh mesin MOXIE sebenar NASA daripada udara karbon dioksida (CO₂) Marikh?",
-          options: [
-            "Bahan api roket cecair",
-            "Oksigen untuk bernafas",
-            "Aiskrim angkasa",
-          ],
-          correct: 1,
-          feedbackCorrect:
-            "Hebat! MOXIE pada rover Perseverance NASA benar-benar menukar CO₂ Marikh kepada oksigen!",
-          feedbackWrong:
-            "Cuba lagi! MOXIE sebenarnya menukar udara karbon dioksida Marikh kepada oksigen untuk bernafas.",
-        },
-        {
-          q: "Mengapa Pusat Kawalan Bumi tidak dapat membuat keputusan Ribut Suria Sol 3 untuk kita?",
-          options: [
-            "Mereka sedang tidur di Bumi.",
-            "Isyarat radio ambil masa kira-kira 14 minit antara Bumi dan Marikh!",
-            "Marikh menyekat semua gelombang radio selamanya.",
-          ],
-          correct: 1,
-          feedbackCorrect:
-            "Betul! Kerana Marikh sangat jauh, mesej radio ambil masa ~14 minit sehala!",
-          feedbackWrong:
-            "Hampir! Marikh berjuta-juta kilometer jauhnya, jadi mesej radio ambil masa ~14 minit untuk sampai!",
-        },
-        {
-          q: "Mengapa angkasawan perlu mencuci tanah Marikh sebelum menanam kentang angkasa?",
-          options: [
-            "Untuk membuang garam semula jadi bernama perklorat yang merosakkan tumbuhan",
-            "Untuk menjadikan tanah kelihatan lebih cantik",
-            "Kerana tanah Marikh terlalu basah",
-          ],
-          correct: 0,
-          feedbackCorrect:
-            "Cemerlang! Mencuci garam perklorat menjadikan tanah Marikh selamat untuk tanaman sihat!",
-          feedbackWrong:
-            "Sikit lagi! Tanah Marikh ada garam semula jadi bernama perklorat yang mesti dicuci dahulu.",
-        },
-      ],
+        "Yahoo! Anda selesaikan kesemua 5 tugasan rover dan terbang pulang dengan selamat bersama sampel Marikh! Jom kira Mata Misi anda!",
+      goToQuiz: "Lihat Sijil Saya",
     },
     certificate: {
       heading: "Sijil Rasmi Kadet Marikh",
       presentedTo: "Dengan Bangganya Dianugerahkan Kepada",
       namePlaceholder: "Masukkan Nama Kadet...",
       defaultName: "Kadet Angkasa",
-      completedLine:
-        "Kerana berjaya mengharungi 6 Sol di Kawah Jezero, Marikh!",
-      finalStats: "Status Akhir Pangkalan",
+      completedLine: "Kerana menyelesaikan kesemua 5 tugasan rover di Marikh dan terbang pulang dengan selamat!",
+      finalStats: "Status Akhir Misi",
       badgeLabel: "Pangkat Kepakaran",
+      roverLevel: "Tahap Rover",
+      badgesTitle: "Lencana Dikumpul",
       badges: {
-        power: "Jurutera Kuasa Utama",
-        oxygen: "Pakar Oksigen Utama",
-        shielding: "Komander Perisai",
-        food: "Ahli Botani Angkasa",
+        health: "Kapten Penjagaan Kru",
+        power: "Jurutera Kuasa Pakar",
+        supplies: "Ketua Bekalan",
+        science: "Saintis Bintang",
       },
       printBtn: "Cetak / Simpan PDF",
       downloadBtn: "Muat Turun PNG",
@@ -494,4 +276,9 @@ export const TRANSLATIONS = {
       ],
     },
   },
+};
+
+export const TRANSLATIONS = {
+  en: { ...BASE.en, ...TASK_TEXT.en },
+  ms: { ...BASE.ms, ...TASK_TEXT.ms },
 };

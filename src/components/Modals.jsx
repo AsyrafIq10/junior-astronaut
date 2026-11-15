@@ -1,10 +1,10 @@
 import React from "react";
-import { X, Volume2, VolumeX, Globe, Sparkles, RotateCcw, Star } from "lucide-react";
+import { X, Volume2, VolumeX, Globe, Sparkles, RotateCcw, Music } from "lucide-react";
 import CapAvatar from "./CapAvatar";
 
-export function SettingsModal({ t, lang, onChangeLang, soundOn, onToggleSound, onClose }) {
+export function SettingsModal({ t, lang, onChangeLang, soundOn, onToggleSound, musicOn, onToggleMusic, autoRead, onToggleAutoRead, bigText, onToggleBigText, onClose }) {
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
       <div className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-5">
           <h2 className="font-display text-xl font-bold text-white">{t.settings}</h2>
@@ -72,6 +72,42 @@ export function SettingsModal({ t, lang, onChangeLang, soundOn, onToggleSound, o
               {soundOn ? t.soundOn : t.soundOff}
             </button>
           </div>
+
+          {/* Music Toggle */}
+          <div className="mt-2.5 flex items-center justify-between p-3.5 rounded-2xl bg-slate-800/80 border border-white/10">
+            <div className="flex items-center gap-2.5 text-sm font-bold text-slate-200">
+              <Music className={`w-5 h-5 ${musicOn ? "text-fuchsia-400" : "text-slate-400"}`} />
+              <span>{t.musicLabel}</span>
+            </div>
+            <button
+              type="button"
+              onClick={onToggleMusic}
+              className={`px-4 py-1.5 rounded-full text-xs font-extrabold uppercase transition ${
+                musicOn ? "bg-fuchsia-400 text-slate-950" : "bg-slate-700 text-slate-300"
+              }`}
+            >
+              {musicOn ? t.soundOn : t.soundOff}
+            </button>
+          </div>
+
+          {[
+            { icon: "🗣️", label: t.autoReadLabel, on: autoRead, toggle: onToggleAutoRead },
+            { icon: "🔠", label: t.bigTextLabel, on: bigText, toggle: onToggleBigText },
+          ].map((row) => (
+            <div key={row.label} className="mt-2.5 flex items-center justify-between p-3.5 rounded-2xl bg-slate-800/80 border border-white/10">
+              <div className="flex items-center gap-2.5 text-sm font-bold text-slate-200">
+                <span className="text-lg">{row.icon}</span>
+                <span>{row.label}</span>
+              </div>
+              <button
+                type="button"
+                onClick={row.toggle}
+                className={`px-4 py-1.5 rounded-full text-xs font-extrabold uppercase transition ${row.on ? "bg-cyan-400 text-slate-950" : "bg-slate-700 text-slate-300"}`}
+              >
+                {row.on ? t.soundOn : t.soundOff}
+              </button>
+            </div>
+          ))}
         </div>
 
         <button
@@ -115,7 +151,7 @@ export function LoseModal({ t, depletedResource, onRetry }) {
 
 export function NasaDataModal({ t, onClose }) {
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
       <div className="w-full max-w-lg bg-slate-900 border border-sky-400/35 rounded-3xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -158,25 +194,12 @@ export function NasaDataModal({ t, onClose }) {
 }
 
 export function CreditsModal({ t, onClose }) {
-  const c = t.credits;
-  const sections = [
-    { heading: c.designDev, lines: [c.team] },
-    { heading: c.builtWith, lines: ["React", "Three.js · React Three Fiber · Drei", "Tailwind CSS", "Lucide Icons", "Vite"] },
-    { heading: c.science, lines: [c.scienceText] },
-  ];
+  const c = t.creditsModal;
   return (
-    <div
-      className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="credits-title"
-    >
-      <div className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-5">
-          <h2 id="credits-title" className="flex items-center gap-2 font-display text-xl font-bold text-white">
-            <Star className="w-5 h-5 text-amber-300" />
-            {c.title}
-          </h2>
+          <h2 className="font-display text-xl font-bold text-white">{c.title}</h2>
           <button
             type="button"
             onClick={onClose}
@@ -187,31 +210,32 @@ export function CreditsModal({ t, onClose }) {
           </button>
         </div>
 
-        <div className="max-h-[55vh] overflow-y-auto overflow-x-hidden mb-5 pr-1">
-          <div className="credits-roll flex flex-col items-center text-center gap-5 py-2">
-            <div className="text-4xl">🚀</div>
-            <p className="font-display text-2xl font-bold text-white">{t.gameTitle}</p>
-            {sections.map((sec) => (
-              <div key={sec.heading}>
-                <p className="text-xs font-extrabold uppercase tracking-widest text-orange-300 mb-1.5">
-                  {sec.heading}
-                </p>
-                {sec.lines.map((line) => (
-                  <p key={line} className="text-sm font-semibold text-slate-200 leading-relaxed">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            ))}
-            <p className="font-display text-lg font-bold text-amber-200 pt-2">{c.thanks}</p>
-          </div>
+        <div className="text-center mb-5">
+          <div className="text-4xl mb-1">🚀</div>
+          <div className="font-display text-lg font-bold text-orange-300">{t.gameTitle}</div>
         </div>
+
+        <div className="space-y-4">
+          {c.sections.map((sec) => (
+            <div key={sec.heading} className="p-4 rounded-2xl bg-slate-800/70 border border-white/10">
+              <div className="text-xs font-extrabold uppercase tracking-wider text-sky-300 mb-2">{sec.heading}</div>
+              <ul className="space-y-1">
+                {sec.items.map((item) => (
+                  <li key={item} className="text-sm font-semibold text-slate-200">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-5 text-center text-sm font-bold text-emerald-300">{c.thanks}</p>
 
         <button
           type="button"
           onClick={onClose}
-          autoFocus
-          className="w-full py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-white/15 font-bold text-sm text-white transition"
+          className="mt-5 w-full py-3 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold transition"
         >
           {t.close}
         </button>
